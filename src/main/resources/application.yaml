@@ -1,0 +1,31 @@
+spring.datasource.url: jdbc:h2:file:./camunda-h2-database
+
+camunda.bpm.admin-user:
+  id: demo
+  password: demo
+  
+server:
+  servlet:
+    context-path: /fintech/order-source/
+  port: 9002
+  tomcat: 
+    accesslog:
+      pattern: '%h %l %u %t "%r" %s %b "%{Referer}i" "%{User-Agent}i" "%{X-Forwarded-For}i"' 
+      directory: '${ACCESS_LOG:/tmp/access}'
+      enabled: true
+      rotate: false
+
+logging:
+  pattern:
+    console: '[%date{ISO8601}] [${spring.application.name}] logLevel=%level pid=${PID:-} thread=%thread class=%logger{40} message="%msg"%n'
+  level:
+    com.babcock.accounts: DEBUG
+  file:
+    path: /tmp/log/accounts.log
+swagger:
+  base:
+    package: com.fintech.ordersource.controller
+    
+spring:
+  application:
+    name: APPLICATION=ORDER-SOURCE DEV
