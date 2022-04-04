@@ -67,4 +67,4 @@ stages:
               appName: 'order-source'
               package: '$(Pipeline.Workspace)/drop/**/target/*.?(war|jar)'
               runtimeStack: 'JAVA|11-java11'
-              startUpCommand: 'java -jar OrderSource-1.0.0-SNAPSHOT.jar'
+              startUpCommand: 'java -jar /home/site/wwwroot/app.jar --server.port=80'
