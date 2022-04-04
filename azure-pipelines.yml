@@ -60,9 +60,11 @@ stages:
         deploy:
           steps:
           - task: AzureWebApp@1
-            displayName: 'Azure Web App Deploy: dr-poc'
+            displayName: 'Azure Web App Deploy: order-source'
             inputs:
-              azureSubscription: $(azureSubscription)
-              appType: webAppLinux
-              appName: $(webAppName)
+              azureSubscription: 'Fintech POC(2ff685ca-aec4-4508-b501-d9f735209ebb)'
+              appType: 'webAppLinux'
+              appName: 'order-source'
               package: '$(Pipeline.Workspace)/drop/**/target/*.?(war|jar)'
+              runtimeStack: 'JAVA|11-java11'
+              startUpCommand: 'java -jar OrderSource-1.0.0-SNAPSHOT.jar'
