@@ -5,10 +5,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 public class HelloFintech {
-	@GetMapping("/")
+	/*@GetMapping("/")
     public String index() {
         return "Welcome to Fintech Order Source Service";
-    }
+    }*/
 
     @GetMapping("/ping")
     public String ping() {

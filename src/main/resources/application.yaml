@@ -29,3 +29,23 @@ swagger:
 spring:
   application:
     name: APPLICATION=ORDER-SOURCE DEV
+    
+# Kafka
+  kafka:
+    properties:
+      sasl.mechanism: PLAIN
+      bootstrap.servers: pkc-epwny.eastus.azure.confluent.cloud:9092
+      sasl.jaas.config: org.apache.kafka.common.security.plain.PlainLoginModule   required username='VOQHCPO6GYJZJGZ2'   password='o4mzip9b2/KeOu/DUIJDXUFObB9O5XLrcjE+m9y8ZHUN/ih6Vk5Oyzuc7AtgBwbE';
+      security.protocol: SASL_SSL
+      #spring.json.trusted.packages: *
+      consumer: 
+        group-id: test_group
+        enable-auto-commit: false
+        auto-offset-reset: earliest
+        key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+        value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      producer: 
+        enable-auto-commit: false
+        auto-offset-reset: earliest
+        key-serializer: org.apache.kafka.common.serialization.StringSerializer
+        value-serializer: org.apache.kafka.common.serialization.StringSerializer
