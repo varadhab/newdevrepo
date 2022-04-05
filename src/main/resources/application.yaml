@@ -7,7 +7,7 @@ camunda.bpm.admin-user:
 server:
   servlet:
     context-path: /fintech/order-source/
-  port: 9002
+  port: 80
   tomcat: 
     accesslog:
       pattern: '%h %l %u %t "%r" %s %b "%{Referer}i" "%{User-Agent}i" "%{X-Forwarded-For}i"' 
