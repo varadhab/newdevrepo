@@ -24,7 +24,7 @@ public class ExceptionDelegate implements JavaDelegate {
 
 	@Override
 	public void execute(DelegateExecution execution) throws Exception {
-		logger.info("Executing Validation Failed Orders for activity: {0}, Error code:{1}, Error message:{2}",
+		logger.info("Executing Failed Orders for activity: {}, Error code:{}, Error message:{}",
 				execution.getCurrentActivityName(), execution.getVariable("errCode"), execution.getVariable("errMessage"));
 	    producerService.publishMessage((String) execution.getVariable(OrderSourceConstants.FAILED_ORDER),OrderSourceConstants.FAIL_ORDER_TOPIC);
 		

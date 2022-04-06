@@ -4,15 +4,30 @@ import java.util.List;
 
 public class POData {
 
-	private String orderId;
+	
+	private String purchaseOrderNbr;
+	private String deliveryDate;
+	private String vendorNumber;
 	private String orderStatus;
 	private List<OrderItem> orderItems;
 	
-	public String getOrderId() {
-		return orderId;
+	public String getPurchaseOrderNbr() {
+		return purchaseOrderNbr;
 	}
-	public void setOrderId(String orderId) {
-		this.orderId = orderId;
+	public void setPurchaseOrderNbr(String purchaseOrderNbr) {
+		this.purchaseOrderNbr = purchaseOrderNbr;
+	}
+	public String getDeliveryDate() {
+		return deliveryDate;
+	}
+	public void setDeliveryDate(String deliveryDate) {
+		this.deliveryDate = deliveryDate;
+	}
+	public String getVendorNumber() {
+		return vendorNumber;
+	}
+	public void setVendorNumber(String vendorNumber) {
+		this.vendorNumber = vendorNumber;
 	}
 	public String getOrderStatus() {
 		return orderStatus;
@@ -25,5 +40,10 @@ public class POData {
 	}
 	public void setOrderItems(List<OrderItem> orderItems) {
 		this.orderItems = orderItems;
+	}
+	@Override
+	public String toString() {
+		return "POData [purchaseOrderNbr=" + purchaseOrderNbr + ", deliveryDate=" + deliveryDate + ", vendorNumber="
+				+ vendorNumber + ", orderStatus=" + orderStatus + ", orderItems=" + orderItems + "]";
 	}
 }
