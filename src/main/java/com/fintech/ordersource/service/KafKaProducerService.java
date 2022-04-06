@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
-import com.fintech.ordersource.util.OrderSourceConstants;
 
 
 @Service
@@ -19,7 +18,7 @@ public class KafKaProducerService
 	private KafkaTemplate<String, Object> kafkaTemplate;
 
 	public void publishMessage(String message,String topic) {
-		logger.info(String.format("Publishing Item order created for topic :"+OrderSourceConstants.ORDER_TOPIC+"-> %s", message));
+		logger.info(String.format("Publishing Item order created for topic :"+topic+"-> %s", message));
 		kafkaTemplate.send(topic, message);
 	}
 }

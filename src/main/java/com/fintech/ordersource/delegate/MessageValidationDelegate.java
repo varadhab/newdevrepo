@@ -40,21 +40,22 @@ public class MessageValidationDelegate  implements JavaDelegate{
     	Message<PurchaseOrder> message = mapper.readValue((String) execution.getVariable(OrderSourceConstants.PURCHASE_ORDER),new TypeReference<Message<PurchaseOrder>>() {});
         PurchaseOrder order = message.getData();
     	var errors = new ArrayList<String>();
-    	if(Objects.isNull(order.getOrderId()) || order.getOrderId().isEmpty() || order.getOrderId().isEmpty()) {
+    	if(isValid(order.getPoNbr())) {
     		errors.add("Order Id is missing");
     	}
-    	if(Objects.isNull(order.getQuantity()) || order.getQuantity().isEmpty() || order.getQuantity().isEmpty()) {
-    		errors.add("Order quantity is missing");
+    	if(isValid(order.getVendorNbr())) {
+    		errors.add("Vendor number is missing");
     	}
-    	logger.info("Validation is complete");
     	String outputMessage = null;
     	if(errors.size() > 0) {
+    		logger.info("Validation is complete and is a failure");
     		order.setOrderStatus("VALIDATION FAILED");
     		message.setType("ValidationFailEvent");
     		outputMessage = mapper.writeValueAsString(message);
     		execution.setVariable(OrderSourceConstants.FAILED_ORDER, outputMessage);
     		throw new BpmnError("MI_100", "Validation Failed");
     	}else {
+    		logger.info("Validation is complete and is successful");
     		order.setOrderStatus("VALIDATION SUCCESS");
     		message.setType("ValidationSuccessEvent");
     		outputMessage = mapper.writeValueAsString(message);
@@ -62,4 +63,10 @@ public class MessageValidationDelegate  implements JavaDelegate{
     	}
     }
 
+    private boolean isValid(String value) {
+    	if(Objects.isNull(value) || value.isEmpty() || value.isEmpty()) {
+    		return true;
+    	}
+    	return false;
+    }
 }

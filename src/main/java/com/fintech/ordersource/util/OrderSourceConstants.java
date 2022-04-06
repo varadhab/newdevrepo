@@ -27,5 +27,8 @@ public class OrderSourceConstants {
     public static final String PURCHASE_ORDER = "purchaseOrder";
     public static final String FAILED_ORDER = "failedOrder";
     public static final String CORRELATION_ID = "correlationId";
+    public static final String VENDOR_NBR = "vendorNbr";
+    public static final String DELIVERY_DATE = "deliveryDate";
+    public static final String PO_NBR = "poNbr";
 	
 }

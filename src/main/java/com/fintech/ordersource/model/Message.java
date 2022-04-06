@@ -1,12 +1,8 @@
 package com.fintech.ordersource.model;
 
-import java.time.Instant;
 import java.util.UUID;
 
 import org.springframework.stereotype.Component;
-
-import com.fasterxml.jackson.annotation.JsonFormat;
-
 
 @Component
 public class Message<T> {
@@ -14,8 +10,6 @@ public class Message<T> {
   private String type;
   private String id = UUID.randomUUID().toString(); // unique id of this message
   private String source;
-  //@JsonFormat(shape = JsonFormat.Shape.STRING) // ISO-8601 compliant format  
- // private Instant time = Instant.now();
   private T data;
   private String datacontenttype="application/json";
   private String specversion="1.0";
@@ -24,6 +18,8 @@ public class Message<T> {
   private String traceid = UUID.randomUUID().toString(); // trace id, default: new unique
   private String correlationId = UUID.randomUUID().toString(); // id which can be used for correlation later if required
   private String group = "order-topic";
+	private String filename;
+	private String filetype;
   
   public Message() {    
   }
@@ -37,11 +33,6 @@ public Message(String type, String traceid, T payload) {
     this.type = type;
     this.traceid = traceid;
     this.data = payload;
-  }
-
-  @Override
-  public String toString() {
-    return "Message [type=" + type + ", id=" + id + ", time=" + "time "+ ", data=" + data + ", correlationid=" + correlationId + ", traceid=" + traceid + "]";
   }
 
   public String getType() {
@@ -59,14 +50,6 @@ public Message(String type, String traceid, T payload) {
   public void setId(String id) {
     this.id = id;
   }
-
-//  public Instant getTime() {
-//    return time;
-//  }
-//
-//  public void setTime(Instant time) {
-//    this.time = time;
-//  }
 
   public T getData() {
     return data;
@@ -107,5 +90,28 @@ public Message(String type, String traceid, T payload) {
   public String getGroup() {
     return group;
   }
+
+	public String getFilename() {
+		return filename;
+	}
+
+	public void setFilename(String filename) {
+		this.filename = filename;
+	}
+
+	public String getFiletype() {
+		return filetype;
+	}
+
+	public void setFiletype(String filetype) {
+		this.filetype = filetype;
+	}
+
+	@Override
+	public String toString() {
+		return "Message [type=" + type + ", id=" + id + ", source=" + source + ", data=" + data + ", datacontenttype="
+				+ datacontenttype + ", specversion=" + specversion + ", traceid=" + traceid + ", correlationId="
+				+ correlationId + ", group=" + group + ", filename=" + filename + ", filetype=" + filetype + "]";
+	}
 
 }
