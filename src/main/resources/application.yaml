@@ -39,13 +39,11 @@ spring:
       security.protocol: SASL_SSL
       #spring.json.trusted.packages: *
       consumer: 
-        group-id: test_group
+        #group-id: test_group
         enable-auto-commit: false
         auto-offset-reset: earliest
         key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
         value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       producer: 
-        enable-auto-commit: false
-        auto-offset-reset: earliest
         key-serializer: org.apache.kafka.common.serialization.StringSerializer
         value-serializer: org.apache.kafka.common.serialization.StringSerializer

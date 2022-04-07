@@ -10,7 +10,6 @@
       <bpmn:incoming>Flow_0yipduz</bpmn:incoming>
       <bpmn:outgoing>SequenceFlow_16gzt2m</bpmn:outgoing>
     </bpmn:sendTask>
-    <bpmn:sequenceFlow id="Flow_1rc2ym0" sourceRef="Activity_00slk19" targetRef="Activity_0zukf6n" />
     <bpmn:sequenceFlow id="Flow_142zbw6" sourceRef="Activity_0zukf6n" targetRef="EndEvent_0x6ir2l" />
     <bpmn:userTask id="Activity_0zukf6n" name="Review Purchase Order">
       <bpmn:extensionElements>
@@ -18,7 +17,7 @@
           <camunda:formField id="FormField_1uvl8d9" label="Accept PO" type="string" defaultValue="Accept PO" />
         </camunda:formData>
       </bpmn:extensionElements>
-      <bpmn:incoming>Flow_1rc2ym0</bpmn:incoming>
+      <bpmn:incoming>Flow_0f8e53q</bpmn:incoming>
       <bpmn:outgoing>Flow_142zbw6</bpmn:outgoing>
     </bpmn:userTask>
     <bpmn:sequenceFlow id="Flow_1vt7ezj" sourceRef="Event_1htakqk" targetRef="Activity_00slk19" />
@@ -33,27 +32,26 @@
     </bpmn:endEvent>
     <bpmn:sendTask id="Activity_00slk19" name="Transform Order" camunda:asyncBefore="true" camunda:delegateExpression="#{messageTransformationDelegate}">
       <bpmn:incoming>Flow_1vt7ezj</bpmn:incoming>
-      <bpmn:outgoing>Flow_1rc2ym0</bpmn:outgoing>
+      <bpmn:outgoing>Flow_0ly9ybs</bpmn:outgoing>
     </bpmn:sendTask>
     <bpmn:serviceTask id="Activity_0idthnh" name="Error Service" camunda:asyncBefore="true" camunda:delegateExpression="#{exceptionDelegate}">
       <bpmn:incoming>Flow_1i9z306</bpmn:incoming>
       <bpmn:incoming>Flow_0lntgsj</bpmn:incoming>
       <bpmn:incoming>Flow_0uy6ndh</bpmn:incoming>
-      <bpmn:outgoing>Flow_069hlp2</bpmn:outgoing>
+      <bpmn:outgoing>Flow_0xyczz1</bpmn:outgoing>
     </bpmn:serviceTask>
     <bpmn:sequenceFlow id="Flow_1i9z306" sourceRef="Event_1vvlusz" targetRef="Activity_0idthnh" />
     <bpmn:boundaryEvent id="Event_1vvlusz" name="Validation Failed" attachedToRef="say-hello">
       <bpmn:outgoing>Flow_1i9z306</bpmn:outgoing>
       <bpmn:errorEventDefinition id="ErrorEventDefinition_09l1me2" camunda:errorCodeVariable="errCode" camunda:errorMessageVariable="errMessage" />
     </bpmn:boundaryEvent>
-    <bpmn:sequenceFlow id="Flow_069hlp2" sourceRef="Activity_0idthnh" targetRef="Activity_1umq4yh" />
     <bpmn:userTask id="Activity_1umq4yh" name="Review Failed Order">
       <bpmn:extensionElements>
         <camunda:formData>
           <camunda:formField id="FormField_3qmfsve" label="Reject PO" type="string" defaultValue="Reject PO" />
         </camunda:formData>
       </bpmn:extensionElements>
-      <bpmn:incoming>Flow_069hlp2</bpmn:incoming>
+      <bpmn:incoming>Flow_1wud4tz</bpmn:incoming>
       <bpmn:outgoing>Flow_16g58rq</bpmn:outgoing>
     </bpmn:userTask>
     <bpmn:sequenceFlow id="Flow_16g58rq" sourceRef="Activity_1umq4yh" targetRef="Event_1p0rk9w" />
@@ -77,6 +75,144 @@
       <bpmn:errorEventDefinition id="ErrorEventDefinition_11bh890" camunda:errorCodeVariable="errCode" camunda:errorMessageVariable="errMessage" />
     </bpmn:boundaryEvent>
     <bpmn:sequenceFlow id="Flow_0uy6ndh" sourceRef="Event_03h0q9j" targetRef="Activity_0idthnh" />
+    <bpmn:sequenceFlow id="Flow_0xyczz1" sourceRef="Activity_0idthnh" targetRef="Activity_01w9h60" />
+    <bpmn:sequenceFlow id="Flow_1wud4tz" sourceRef="Activity_01w9h60" targetRef="Activity_1umq4yh" />
+    <bpmn:serviceTask id="Activity_01w9h60" name="Notify Failure Teams">
+      <bpmn:extensionElements>
+        <camunda:connector>
+          <camunda:inputOutput>
+            <camunda:inputParameter name="headers">
+              <camunda:map>
+                <camunda:entry key="Content-Type">application/json</camunda:entry>
+              </camunda:map>
+            </camunda:inputParameter>
+            <camunda:inputParameter name="payload">{
+
+
+"@type": "MessageCard",
+
+
+"@context": "http://schema.org/extensions",
+
+
+"themeColor": "0076D7",
+
+
+"summary": "Failure task",
+
+
+"sections": [{
+
+
+"activityTitle": "Camunda created a new failure task",
+
+
+"activitySubtitle": "On Project Order Source",
+
+
+"facts": [{
+
+
+"name": "Assigned to",
+
+
+"value": "support@fintech.com"
+
+
+}, {
+
+
+"name": "Status",
+
+
+"value": "Failed"
+
+
+}]
+
+
+}]
+
+
+}</camunda:inputParameter>
+            <camunda:inputParameter name="method">POST</camunda:inputParameter>
+            <camunda:inputParameter name="url">https://ftechllc.webhook.office.com/webhookb2/e580120d-afe2-42a0-9b7c-b2d688d33833@e290f667-9a20-450a-b0ae-f8bf0881cad2/IncomingWebhook/cdc9ccde6f494179a7a8839acedee539/483cc0ca-54a7-4d8c-a3b2-7bff2bcf9fe3</camunda:inputParameter>
+          </camunda:inputOutput>
+          <camunda:connectorId>http-connector</camunda:connectorId>
+        </camunda:connector>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0xyczz1</bpmn:incoming>
+      <bpmn:outgoing>Flow_1wud4tz</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="Flow_0ly9ybs" sourceRef="Activity_00slk19" targetRef="Activity_1xd2rgk" />
+    <bpmn:serviceTask id="Activity_1xd2rgk" name="Notify Success Teams">
+      <bpmn:extensionElements>
+        <camunda:connector>
+          <camunda:inputOutput>
+            <camunda:inputParameter name="headers">
+              <camunda:map>
+                <camunda:entry key="Content-Type">application/json</camunda:entry>
+              </camunda:map>
+            </camunda:inputParameter>
+            <camunda:inputParameter name="method">POST</camunda:inputParameter>
+            <camunda:inputParameter name="url">https://ftechllc.webhook.office.com/webhookb2/e580120d-afe2-42a0-9b7c-b2d688d33833@e290f667-9a20-450a-b0ae-f8bf0881cad2/IncomingWebhook/26bbe4c0c4614315ae9fbce7ce2673b6/483cc0ca-54a7-4d8c-a3b2-7bff2bcf9fe3</camunda:inputParameter>
+            <camunda:inputParameter name="payload">{
+
+
+"@type": "MessageCard",
+
+
+"@context": "http://schema.org/extensions",
+
+
+"themeColor": "0076D7",
+
+
+"summary": "Success task",
+
+
+"sections": [{
+
+
+"activityTitle": "Camunda created a new success task",
+
+
+"activitySubtitle": "On Project Order Source",
+
+
+"facts": [{
+
+
+"name": "Assigned to",
+
+
+"value": "support@fintech.com"
+
+
+}, {
+
+
+"name": "Status",
+
+
+"value": "Success"
+
+
+}]
+
+
+}]
+
+
+}</camunda:inputParameter>
+          </camunda:inputOutput>
+          <camunda:connectorId>http-connector</camunda:connectorId>
+        </camunda:connector>
+      </bpmn:extensionElements>
+      <bpmn:incoming>Flow_0ly9ybs</bpmn:incoming>
+      <bpmn:outgoing>Flow_0f8e53q</bpmn:outgoing>
+    </bpmn:serviceTask>
+    <bpmn:sequenceFlow id="Flow_0f8e53q" sourceRef="Activity_1xd2rgk" targetRef="Activity_0zukf6n" />
   </bpmn:process>
   <bpmn:message id="Message_1nje247" name="itemOrderRequested" />
   <bpmn:message id="Message_0l07d75" name="itemOrder2Requested" />
@@ -105,12 +241,8 @@
         <di:waypoint x="530" y="150" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_16g58rq_di" bpmnElement="Flow_16g58rq">
-        <di:waypoint x="790" y="110" />
+        <di:waypoint x="830" y="110" />
         <di:waypoint x="892" y="110" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_069hlp2_di" bpmnElement="Flow_069hlp2">
-        <di:waypoint x="560" y="110" />
-        <di:waypoint x="690" y="110" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_1i9z306_di" bpmnElement="Flow_1i9z306">
         <di:waypoint x="500" y="259" />
@@ -121,16 +253,28 @@
         <di:waypoint x="720" y="317" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="Flow_142zbw6_di" bpmnElement="Flow_142zbw6">
-        <di:waypoint x="990" y="317" />
-        <di:waypoint x="1102" y="317" />
-      </bpmndi:BPMNEdge>
-      <bpmndi:BPMNEdge id="Flow_1rc2ym0_di" bpmnElement="Flow_1rc2ym0">
-        <di:waypoint x="820" y="317" />
-        <di:waypoint x="890" y="317" />
+        <di:waypoint x="1180" y="317" />
+        <di:waypoint x="1242" y="317" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNEdge id="SequenceFlow_16gzt2m_di" bpmnElement="SequenceFlow_16gzt2m">
         <di:waypoint x="550" y="317" />
         <di:waypoint x="602" y="317" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0xyczz1_di" bpmnElement="Flow_0xyczz1">
+        <di:waypoint x="560" y="110" />
+        <di:waypoint x="590" y="110" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_1wud4tz_di" bpmnElement="Flow_1wud4tz">
+        <di:waypoint x="690" y="110" />
+        <di:waypoint x="730" y="110" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0ly9ybs_di" bpmnElement="Flow_0ly9ybs">
+        <di:waypoint x="820" y="317" />
+        <di:waypoint x="910" y="317" />
+      </bpmndi:BPMNEdge>
+      <bpmndi:BPMNEdge id="Flow_0f8e53q_di" bpmnElement="Flow_0f8e53q">
+        <di:waypoint x="1010" y="317" />
+        <di:waypoint x="1080" y="317" />
       </bpmndi:BPMNEdge>
       <bpmndi:BPMNShape id="Event_0gu5q3s_di" bpmnElement="StartEvent_1" bioc:stroke="#43a047" bioc:fill="#c8e6c9" color:background-color="#c8e6c9" color:border-color="#43a047">
         <dc:Bounds x="162" y="299" width="36" height="36" />
@@ -141,19 +285,10 @@
       <bpmndi:BPMNShape id="Activity_1yxbc3u_di" bpmnElement="say-hello" bioc:stroke="#1e88e5" bioc:fill="#bbdefb" color:background-color="#bbdefb" color:border-color="#1e88e5">
         <dc:Bounds x="450" y="277" width="100" height="80" />
       </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_1bqnkqv_di" bpmnElement="Activity_0zukf6n" bioc:stroke="#8e24aa" bioc:fill="#e1bee7" color:background-color="#e1bee7" color:border-color="#8e24aa">
-        <dc:Bounds x="890" y="277" width="100" height="80" />
-      </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Event_0xhvrc1_di" bpmnElement="Event_1htakqk" bioc:stroke="#43a047" bioc:fill="#c8e6c9" color:background-color="#c8e6c9" color:border-color="#43a047">
         <dc:Bounds x="602" y="299" width="36" height="36" />
         <bpmndi:BPMNLabel>
           <dc:Bounds x="582" y="342" width="79" height="14" />
-        </bpmndi:BPMNLabel>
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Event_10djhp0_di" bpmnElement="EndEvent_0x6ir2l" bioc:stroke="#43a047" bioc:fill="#c8e6c9" color:background-color="#c8e6c9" color:border-color="#43a047">
-        <dc:Bounds x="1102" y="299" width="36" height="36" />
-        <bpmndi:BPMNLabel>
-          <dc:Bounds x="1089" y="342" width="65" height="14" />
         </bpmndi:BPMNLabel>
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_15pzyma_di" bpmnElement="Activity_00slk19" bioc:stroke="#1e88e5" bioc:fill="#bbdefb" color:background-color="#bbdefb" color:border-color="#1e88e5">
@@ -161,9 +296,6 @@
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_103v0or_di" bpmnElement="Activity_0idthnh" bioc:stroke="#1e88e5" bioc:fill="#bbdefb" color:background-color="#bbdefb" color:border-color="#1e88e5">
         <dc:Bounds x="460" y="70" width="100" height="80" />
-      </bpmndi:BPMNShape>
-      <bpmndi:BPMNShape id="Activity_1qk0c9b_di" bpmnElement="Activity_1umq4yh" bioc:stroke="#8e24aa" bioc:fill="#e1bee7" color:background-color="#e1bee7" color:border-color="#8e24aa">
-        <dc:Bounds x="690" y="70" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Event_1b9dg9j_di" bpmnElement="Event_1p0rk9w" bioc:stroke="#43a047" bioc:fill="#c8e6c9" color:background-color="#c8e6c9" color:border-color="#43a047">
         <dc:Bounds x="892" y="92" width="36" height="36" />
@@ -173,6 +305,24 @@
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Activity_0mdhvn3_di" bpmnElement="Activity_0bl19p7" bioc:stroke="#1e88e5" bioc:fill="#bbdefb" color:background-color="#bbdefb" color:border-color="#1e88e5">
         <dc:Bounds x="250" y="277" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1qk0c9b_di" bpmnElement="Activity_1umq4yh" bioc:stroke="#8e24aa" bioc:fill="#e1bee7" color:background-color="#e1bee7" color:border-color="#8e24aa">
+        <dc:Bounds x="730" y="70" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1qzk0yu_di" bpmnElement="Activity_01w9h60" bioc:stroke="#1e88e5" bioc:fill="#bbdefb" color:background-color="#bbdefb" color:border-color="#1e88e5">
+        <dc:Bounds x="590" y="70" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Event_10djhp0_di" bpmnElement="EndEvent_0x6ir2l" bioc:stroke="#43a047" bioc:fill="#c8e6c9" color:background-color="#c8e6c9" color:border-color="#43a047">
+        <dc:Bounds x="1242" y="299" width="36" height="36" />
+        <bpmndi:BPMNLabel>
+          <dc:Bounds x="1229" y="342" width="65" height="14" />
+        </bpmndi:BPMNLabel>
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_1bqnkqv_di" bpmnElement="Activity_0zukf6n" bioc:stroke="#8e24aa" bioc:fill="#e1bee7" color:background-color="#e1bee7" color:border-color="#8e24aa">
+        <dc:Bounds x="1080" y="277" width="100" height="80" />
+      </bpmndi:BPMNShape>
+      <bpmndi:BPMNShape id="Activity_0jg53uv_di" bpmnElement="Activity_1xd2rgk" bioc:stroke="#1e88e5" bioc:fill="#bbdefb" color:background-color="#bbdefb" color:border-color="#1e88e5">
+        <dc:Bounds x="910" y="277" width="100" height="80" />
       </bpmndi:BPMNShape>
       <bpmndi:BPMNShape id="Event_0nnh842_di" bpmnElement="Event_03h0q9j" bioc:stroke="#e53935" bioc:fill="#ffcdd2" color:background-color="#ffcdd2" color:border-color="#e53935">
         <dc:Bounds x="282" y="259" width="36" height="36" />
