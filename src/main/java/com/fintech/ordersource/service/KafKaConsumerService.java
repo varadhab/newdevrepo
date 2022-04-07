@@ -34,7 +34,7 @@ public class KafKaConsumerService
 	}
 	
 	
-	@KafkaListener(topics = OrderSourceConstants.ORDER_TOPIC, groupId = OrderSourceConstants.GROUP_ID)
+	@KafkaListener(topics = OrderSourceConstants.ORDER_TOPIC, groupId = "test_group_one")
 	public void consumeFromOrderTopic(String messageInput) throws JsonMappingException, JsonProcessingException {
 		
 		logger.info("consumeFromOrderTopic:Message received -> "+OrderSourceConstants.ORDER_TOPIC+":" + messageInput);
@@ -57,7 +57,7 @@ public class KafKaConsumerService
         .correlate();
    	}
 	
-	@KafkaListener(topics = OrderSourceConstants.VALID_ORDER_TOPIC, groupId = OrderSourceConstants.GROUP_ID)
+	@KafkaListener(topics = OrderSourceConstants.VALID_ORDER_TOPIC, groupId = "test_group_two")
 	public void consumeFromValidOrderTopic(String messageInput) throws JsonMappingException, JsonProcessingException {
 		
 		
