@@ -9,6 +9,8 @@ public class POData {
 	private String deliveryDate;
 	private String vendorNumber;
 	private String orderStatus;
+	private String correlationId;
+	private String fileName;
 	private List<OrderItem> orderItems;
 	
 	public String getPurchaseOrderNbr() {
@@ -35,15 +37,29 @@ public class POData {
 	public void setOrderStatus(String orderStatus) {
 		this.orderStatus = orderStatus;
 	}
+	public String getCorrelationId() {
+		return correlationId;
+	}
+	public void setCorrelationId(String correlationId) {
+		this.correlationId = correlationId;
+	}
+	public String getFileName() {
+		return fileName;
+	}
+	public void setFileName(String fileName) {
+		this.fileName = fileName;
+	}
 	public List<OrderItem> getOrderItems() {
 		return orderItems;
 	}
 	public void setOrderItems(List<OrderItem> orderItems) {
 		this.orderItems = orderItems;
 	}
+	
 	@Override
 	public String toString() {
 		return "POData [purchaseOrderNbr=" + purchaseOrderNbr + ", deliveryDate=" + deliveryDate + ", vendorNumber="
-				+ vendorNumber + ", orderStatus=" + orderStatus + ", orderItems=" + orderItems + "]";
+				+ vendorNumber + ", orderStatus=" + orderStatus + ", correlationId=" + correlationId + ", fileName="
+				+ fileName + ", orderItems=" + orderItems + "]";
 	}
 }
