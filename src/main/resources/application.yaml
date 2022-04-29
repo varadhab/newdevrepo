@@ -19,7 +19,7 @@ logging:
   pattern:
     console: '[%date{ISO8601}] [${spring.application.name}] logLevel=%level pid=${PID:-} thread=%thread class=%logger{40} message="%msg"%n'
   level:
-    com.babcock.accounts: DEBUG
+    com.fintech.ordersource: DEBUG
   file:
     path: /tmp/log/accounts.log
 swagger:
@@ -47,3 +47,10 @@ spring:
       producer: 
         key-serializer: org.apache.kafka.common.serialization.StringSerializer
         value-serializer: org.apache.kafka.common.serialization.StringSerializer
+
+ordersource:
+  camunda:
+    properties:
+      teams.webhook.url: https://ftechllc.webhook.office.com/webhookb2/e580120d-afe2-42a0-9b7c-b2d688d33833@e290f667-9a20-450a-b0ae-f8bf0881cad2/IncomingWebhook/26bbe4c0c4614315ae9fbce7ce2673b6/483cc0ca-54a7-4d8c-a3b2-7bff2bcf9fe3 
+      teams.success.message: '{"@type": "MessageCard","@context": "http://schema.org/extensions","themeColor": "0076D7","summary": "Success task","sections": [{"activityTitle": "Camunda created a new success task","activitySubtitle": "On Project Order Source","facts": [{"name": "Assigned to","value": "support@fintech.com"}, {"name": "Status","value": "Success"}]}]}'
+      teams.failure.message: '{"@type": "MessageCard","@context": "http://schema.org/extensions","themeColor": "0076D7","summary": "Failure task","sections": [{"activityTitle": "Camunda created a new failure task","activitySubtitle": "On Project Order Source","facts": [{"name": "Assigned to","value": "support@fintech.com"}, {"name": "Status","value": "Failed"}]}]}'

@@ -44,6 +44,8 @@ public class MessageTransformationDelegate   implements JavaDelegate{
 		poData.setPurchaseOrderNbr(order.getPoNbr());
 		poData.setOrderStatus("ORDER TRANSFORMED");
 		poData.setFileName(message.getFilename());
+		poData.setDeliveryDate(order.getDeliveryDate());
+		poData.setVendorNumber(order.getVendorNbr());
 		poData.setCorrelationId(message.getCorrelationId());
 		var orderItems = new ArrayList<OrderItem>();
 		order.getLineItems().forEach(item -> {
